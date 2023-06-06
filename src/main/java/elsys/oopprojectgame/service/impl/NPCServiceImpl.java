@@ -3,19 +3,20 @@ package elsys.oopprojectgame.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+// import elsys.oopprojectgame.controllers.resources.NPCResource;
 import elsys.oopprojectgame.entity.NPC;
+// import elsys.oopprojectgame.mappers.NPCMapper;
 import elsys.oopprojectgame.repository.NPCRepository;
 import elsys.oopprojectgame.service.NPCService;
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
 public class NPCServiceImpl implements NPCService {
     private final NPCRepository npcRepository;
-
-    @Autowired
-    public NPCServiceImpl(NPCRepository npcRepository) {
-        this.npcRepository = npcRepository;
-    }
 
     @Override
     public List<NPC> getAllNPCs() {
@@ -53,4 +54,9 @@ public class NPCServiceImpl implements NPCService {
             return false;
         }
     }
+
+    // @Override
+    // public NPCResource save(NPCResource npcResource) {
+    //     NPC npc = NPC_MAPPER.fromNPCResource(npcResource); 
+    // }
 }

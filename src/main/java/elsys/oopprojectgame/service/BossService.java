@@ -14,4 +14,14 @@ public interface BossService {
     Boss updateBoss(long id, Boss boss);
 
     boolean deleteBoss(long id);
+
+    // List<BossResource> getAllBosses();
+
+    // BossResource getBossById(long id);
+
+    // BossResource createBoss(BossResource boss);
+
+    // BossResource updateBoss(long id, BossResource boss);
+
+    // boolean deleteBoss(long id);
 }

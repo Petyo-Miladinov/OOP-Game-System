@@ -18,6 +18,6 @@ public interface BossMapper {
 
     @Mapping(target = "id", source = "id")
     BossResource toBossResource(Boss boss);
-
+    
     List<BossResource> toBossResourceList(List<Boss> bosses);
 }
