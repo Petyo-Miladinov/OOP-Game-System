@@ -1,56 +1,53 @@
 package elsys.oopprojectgame.service.impl;
 
+import static elsys.oopprojectgame.mappers.PlayerMapper.PLAYER_MAPPER;
+
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import elsys.oopprojectgame.controllers.resources.PLayerResource;
 import elsys.oopprojectgame.entity.Player;
+import elsys.oopprojectgame.mappers.PlayerMapper;
 import elsys.oopprojectgame.repository.PlayerRepository;
 import elsys.oopprojectgame.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
+    private final PlayerMapper playerMapper;
 
-    @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
+    @Override
+    public List<PLayerResource> getAllPlayers() {
+        return PLAYER_MAPPER.toPlayerResourceList(playerRepository.findAll());
     }
 
     @Override
-    public List<Player> getAllPlayers() {
-        return playerRepository.findAll();
+    public PLayerResource getPlayerById(long id) {
+        return PLAYER_MAPPER.toPlayerResource(playerRepository.getReferenceById( (int) id));
     }
 
     @Override
-    public Player getPlayerById(long id) {
-        return playerRepository.findById((int) id).orElse(null);
+    public PLayerResource savePlayer(PLayerResource resource) {
+        Player player = playerMapper.fromPlayerResource(resource);
+
+        return PLAYER_MAPPER.toPlayerResource(playerRepository.save(player));
     }
 
     @Override
-    public Player createPlayer(Player player) {
-        return playerRepository.save(player);
-    }
+    public PLayerResource updatePlayer(long id, PLayerResource resource) {
+        Player toUpdate = playerRepository.getReferenceById((int) id); 
+        toUpdate.setName(resource.getName());
 
-    @Override
-    public Player updatePlayer(long id, Player player) {
-        Optional<Player> existingPlayer = playerRepository.findById((int) id);
-        if (existingPlayer.isPresent()) {
-            player.setId(id);
-            return playerRepository.save(player);
-        } else {
-            return null;
-        }
+        return PLAYER_MAPPER.toPlayerResource(playerRepository.save(toUpdate));
     }
 
     @Override
     public boolean deletePlayer(long id) {
-        Optional<Player> player = playerRepository.findById((int) id);
-        if (player.isPresent()) {
-            playerRepository.delete(player.get());
-            return true;
-        } else {
-            return false;
-        }
+        playerRepository.deleteById((int) id);
+
+        return true;
     }
 }

@@ -11,7 +11,7 @@ import elsys.oopprojectgame.entity.Quest;
 public interface QuestMapper {
     QuestMapper QUEST_MAPPER = Mappers.getMapper(QuestMapper.class);
 
-    @Mapping(target = "id", source = "quest.id")
+    @Mapping(target = "id", source = "questResource.id")
     Quest fromQuestResource(QuestResource questResource);
 
     @Mapping(target = "id", source = "quest.id")

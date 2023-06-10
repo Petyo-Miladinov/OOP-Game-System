@@ -11,10 +11,10 @@ import elsys.oopprojectgame.entity.Location;
 public interface LocationMapper {
     LocationMapper LOCATION_MAPPER = Mappers.getMapper(LocationMapper.class);
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "locationResource.id")
     Location fromLocationResource(LocationResource locationResource);
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "location.id")
     LocationResource toLocationResource(Location location);
 
     List<LocationResource> toLocationResourceList(List<Location> locations);

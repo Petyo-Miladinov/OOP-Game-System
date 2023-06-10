@@ -1,56 +1,95 @@
 package elsys.oopprojectgame.service.impl;
 
+import static elsys.oopprojectgame.mappers.QuestMapper.QUEST_MAPPER;
+
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import elsys.oopprojectgame.controllers.resources.QuestResource;
 import elsys.oopprojectgame.entity.Quest;
+import elsys.oopprojectgame.mappers.QuestMapper;
 import elsys.oopprojectgame.repository.QuestRepository;
 import elsys.oopprojectgame.service.QuestService;
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
 public class QuestServiceImpl implements QuestService {
     private final QuestRepository questRepository;
+    private final QuestMapper questMapper;
 
-    @Autowired
-    public QuestServiceImpl(QuestRepository questRepository) {
-        this.questRepository = questRepository;
+    @Override
+    public List<QuestResource> getAllQuests() {
+        return QUEST_MAPPER.toQuestResourceList(questRepository.findAll());
     }
 
     @Override
-    public List<Quest> getAllQuests() {
-        return questRepository.findAll();
+    public QuestResource getQuestById(long id) {
+        return QUEST_MAPPER.toQuestResource(questRepository.getReferenceById((int) id));
     }
 
     @Override
-    public Quest getQuestById(long id) {
-        return questRepository.findById((int) id).orElse(null);
+    public QuestResource saveQuest(QuestResource resource) {
+        Quest Quest = questMapper.fromQuestResource(resource); 
+
+        return QUEST_MAPPER.toQuestResource(questRepository.save(Quest));
     }
 
     @Override
-    public Quest createQuest(Quest quest) {
-        return questRepository.save(quest);
-    }
+    public QuestResource updateQuest(long id, QuestResource resource) {
+        Quest toUpdate = questRepository.getReferenceById((int) id); 
+        toUpdate.setName(resource.getName());
 
-    @Override
-    public Quest updateQuest(long id, Quest quest) {
-        Optional<Quest> existingQuest = questRepository.findById((int) id);
-        if (existingQuest.isPresent()) {
-            quest.setId(id);
-            return questRepository.save(quest);
-        } else {
-            return null;
-        }
+        return QUEST_MAPPER.toQuestResource(questRepository.save(toUpdate));
     }
 
     @Override
     public boolean deleteQuest(long id) {
-        Optional<Quest> quest = questRepository.findById((int) id);
-        if (quest.isPresent()) {
-            questRepository.delete(quest.get());
-            return true;
-        } else {
-            return false;
-        }
+        questRepository.deleteById((int) id);
+
+        return true;
     }
+
+    // @Autowired
+    // public QuestServiceImpl(QuestRepository questRepository) {
+    //     this.questRepository = questRepository;
+    // }
+
+    // @Override
+    // public List<Quest> getAllQuests() {
+    //     return questRepository.findAll();
+    // }
+
+    // @Override
+    // public Quest getQuestById(long id) {
+    //     return questRepository.findById((int) id).orElse(null);
+    // }
+
+    // @Override
+    // public Quest createQuest(Quest quest) {
+    //     return questRepository.save(quest);
+    // }
+
+    // @Override
+    // public Quest updateQuest(long id, Quest quest) {
+    //     Optional<Quest> existingQuest = questRepository.findById((int) id);
+    //     if (existingQuest.isPresent()) {
+    //         quest.setId(id);
+    //         return questRepository.save(quest);
+    //     } else {
+    //         return null;
+    //     }
+    // }
+
+    // @Override
+    // public boolean deleteQuest(long id) {
+    //     Optional<Quest> quest = questRepository.findById((int) id);
+    //     if (quest.isPresent()) {
+    //         questRepository.delete(quest.get());
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 }

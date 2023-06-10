@@ -11,10 +11,10 @@ import elsys.oopprojectgame.entity.Item;
 public interface ItemMapper {
     ItemMapper ITEM_MAPPER = Mappers.getMapper(ItemMapper.class);
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "itemResource.id")
     Item fromItemResource(ItemResource itemResource);
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "item.id")
     ItemResource toItemResource(Item item);
 
     List<ItemResource> toItemResourceList(List<Item> items);

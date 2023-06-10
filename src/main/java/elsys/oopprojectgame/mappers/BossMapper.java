@@ -13,11 +13,11 @@ import elsys.oopprojectgame.entity.Boss;
 public interface BossMapper {
     BossMapper BOSS_MAPPER = Mappers.getMapper(BossMapper.class);
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "bossResource.id")
     Boss fromBossResource(BossResource bossResource); 
 
-    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", source = "boss.id")
     BossResource toBossResource(Boss boss);
-    
+
     List<BossResource> toBossResourceList(List<Boss> bosses);
 }

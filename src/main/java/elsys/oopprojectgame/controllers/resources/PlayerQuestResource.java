@@ -9,8 +9,10 @@ import lombok.Data;
 
 @Data
 public class PlayerQuestResource {
+    private Long id;
     private Player player;
     private Quest quest;
     private String status;
+    //private String name; 
     private List<PlayerQuest> playerQuests;
 }
